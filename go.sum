@@ -1,5 +1,5 @@
-github.com/aminebt/rbac-operator v0.0.0-20250620120806-bbef3a3bbaaf h1:+Gx3JDSpWea9oArUUjaOeShAWicfXpR+VuOxvHVuCuY=
-github.com/aminebt/rbac-operator v0.0.0-20250620120806-bbef3a3bbaaf/go.mod h1:P46X+gVgJYC0+z0B6xin+lLT4e/uzcONMeN23hWqtNo=
+github.com/aminebt/rbac-operator v0.0.0-20250626160826-61e7f86ec115 h1:fIXc3pAIowGqa6p16cKuIzvTMLZ7KSSJgCYwmpdUq9A=
+github.com/aminebt/rbac-operator v0.0.0-20250626160826-61e7f86ec115/go.mod h1:P46X+gVgJYC0+z0B6xin+lLT4e/uzcONMeN23hWqtNo=
 github.com/beorn7/perks v1.0.1 h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=
 github.com/beorn7/perks v1.0.1/go.mod h1:G2ZrVWU2WbWT9wwq4/hrbKbnv/1ERSJQ0ibhJ6rlkpw=
 github.com/blang/semver/v4 v4.0.0 h1:1PFHFE6yCCTv8C1TeyNNarDzntLi7wMI5i/pzqYIsAM=

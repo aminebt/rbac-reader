@@ -1,5 +1,5 @@
 # Binaries for programs and plugins
-./rbac-reader
+rbac-reader
 *.exe
 *.exe~
 *.dll

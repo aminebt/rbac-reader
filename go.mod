@@ -5,7 +5,7 @@ go 1.24.0
 toolchain go1.24.4
 
 require (
-	github.com/aminebt/rbac-operator v0.0.0-20250620120806-bbef3a3bbaaf
+	github.com/aminebt/rbac-operator v0.0.0-20250626160826-61e7f86ec115
 	github.com/go-chi/chi v1.5.5
 	k8s.io/apimachinery v0.33.2
 	sigs.k8s.io/controller-runtime v0.21.0

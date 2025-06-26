@@ -1,59 +1,38 @@
 package main
 
 import (
-	"fmt"
 	"log/slog"
 	"os"
 
-	rbacv1alpha1 "github.com/aminebt/rbac-operator/api/v1alpha1"
+	rbacapi "github.com/aminebt/rbac-reader/internal/api"
 	"github.com/aminebt/rbac-reader/internal/server"
-	"k8s.io/apimachinery/pkg/runtime"
-	ctrl "sigs.k8s.io/controller-runtime"
 )
 
 func main() {
-	//gr := &rbacv1alpha1.GridOSGroup{}
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
-	restConfig := ctrl.GetConfigOrDie()
-	scheme := runtime.NewScheme()
+	backend := "kubernetes"
 
-	if err := rbacv1alpha1.AddToScheme(scheme); err != nil {
-		fmt.Println("failed to add rbac types to scheme", "error", err)
-		os.Exit(1)
-	}
-	logger.Info("successfully added rbac types to scheme")
-
-	ctrlOpts := ctrl.Options{
-		Scheme:         scheme,
-		LeaderElection: false,
-	}
-
-	mgr, err := ctrl.NewManager(restConfig, ctrlOpts)
-
+	// initialize datasource - mgr is non nil in case of kubernetes backend
+	ds, mgr, err := rbacapi.NewDataSource(backend)
 	if err != nil {
-		logger.Error("unable to create manager", "error", err)
+		logger.Error("Unable to initialize datasource of backend type %s", backend)
 		os.Exit(1)
 	}
 
-	api, err := server.NewApi(logger, mgr.GetClient(), mgr.GetScheme())
+	svr, err := server.NewServer(logger)
 	if err != nil {
-		logger.Error("failed to create api", "error", err)
+		logger.Error("failed to create server", "error", err)
 		os.Exit(1)
 	}
-
-	svr, err := server.NewServer(api, logger)
-
-	if err := svr.SetupWithManager(mgr); err != nil {
-		logger.Error("failed to setup server with manager", "error", err)
-		os.Exit(1)
+	// create the API
+	api := &rbacapi.Api{
+		Logger:     logger,
+		Datasource: ds,
+		Backend:    backend,
+		Server:     *svr,
+		Manager:    mgr,
 	}
 
-	// start the manager
-	logger.Info("starting manager")
-	err = mgr.Start(ctrl.SetupSignalHandler())
-	if err != nil {
-		logger.Error("unable to start manager", "error", err)
-		os.Exit(1)
-	}
+	api.Start()
 
 }

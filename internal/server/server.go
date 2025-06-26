@@ -18,7 +18,7 @@ type Server struct {
 	server   *http.Server
 }
 
-func NewServer(api *Api, logger *slog.Logger) (*Server, error) {
+func NewServer(logger *slog.Logger) (*Server, error) {
 	port := 9090 // TBD read from config
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 	if err != nil {
@@ -26,8 +26,8 @@ func NewServer(api *Api, logger *slog.Logger) (*Server, error) {
 	}
 
 	svc := &http.Server{
-		Addr:              fmt.Sprintf(":%d", port),
-		Handler:           NewRouter(api),   // api.Router() is a function that returns an http.Handler (implemented with chi router)
+		Addr: fmt.Sprintf(":%d", port),
+		//Handler:           rbacapi.NewRouter(api), // api.Router() is a function that returns an http.Handler (implemented with chi router)
 		IdleTimeout:       90 * time.Second, // matches http.DefaultTransport keep-alive timeout
 		ReadTimeout:       32 * time.Second,
 		ReadHeaderTimeout: 32 * time.Second,
@@ -42,6 +42,10 @@ func NewServer(api *Api, logger *slog.Logger) (*Server, error) {
 	}
 
 	return svr, nil
+}
+
+func (s *Server) SetHandler(handler http.Handler) {
+	s.server.Handler = handler
 }
 
 func (s *Server) SetupWithManager(mgr ctrl.Manager) error {
